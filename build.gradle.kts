@@ -53,5 +53,5 @@ tasks.processResources {
 }
 
 tasks.jar {
-    destinationDirectory.set(file("/Users/leooh/Desktop/mcserver/plugins"))
+    destinationDirectory.set(file(outputFilePath))
 }

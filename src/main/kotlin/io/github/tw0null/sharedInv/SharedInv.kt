@@ -1,10 +1,7 @@
 package io.github.tw0null.sharedInv
 
-import io.github.zeettn.invfx.InvFX.frame
-import io.github.zeettn.invfx.openFrame
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -34,27 +31,20 @@ class SharedInv : JavaPlugin(), Listener, CommandExecutor {
     fun saveInv(){
         val configf = File(dataFolder, "inv.yml")
         val config = YamlConfiguration.loadConfiguration(configf)
-        inv.contents.forEachIndexed { index, item ->
-            if (item != null){
-                val path = "inv.$index"
-                config.set("$path.type", item.type.name)
-                config.set("$path.amount", item.amount)
-            }
-        }
+        config.set("inv", inv.contents.toList())
         config.save(configf)
     }
-    fun loadInv(){
+    fun loadInv() {
         val configf = File(dataFolder, "inv.yml")
-        if (!configf.exists()) {return }
+        if (!configf.exists()) return
         val config = YamlConfiguration.loadConfiguration(configf)
-        config.getConfigurationSection("inv") ?: return
-        for (key in config.getKeys(false)) {
-            val type = config.getString("$key.type")?.let { Material.valueOf(it) }
-            type?: return
-            val amount = config.getInt("$key.amount", 1)
-            val item = ItemStack(type, amount)
-            inv.setItem(key.toInt(), item)
 
+        val items = config.getList("inv") ?: return
+
+        for ((index, item) in items.withIndex()) {
+            if (item is ItemStack) {
+                inv.setItem(index, item)
+            }
         }
     }
 
