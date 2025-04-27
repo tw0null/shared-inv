@@ -1,0 +1,10 @@
+name: shared-inv
+version: '1.0-SNAPSHOT'
+main: io.github.tw0null.sharedInv.SharedInv
+api-version: '1.21'
+commands:
+    sinv:
+      description: 공유 인벤토리 열기
+      usage: /sinv
+libraries:
+  - io.github.zeettn:invfx-core:3.3.3
